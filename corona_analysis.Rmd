@@ -1,0 +1,73 @@
+---
+title: "corona virus"
+author: "Aionwind"
+date: "2/3/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+#read data
+if (!require("gsheet")) {
+  install.packages("gsheet")
+  library(gsheet)
+}
+
+time_series_data = gsheet2tbl('docs.google.com/spreadsheets/d/1UF2pSkFTURko2OvfHWWlFpDFAr1UxCBA4JLwlSP6KFo')
+case_combined_data = gsheet2tbl('docs.google.com/spreadsheets/d/1wQVypefm946ch4XDp37uZ-wartW4V7ILdg-qYiDXUHM')
+```
+
+
+```{r}
+#data clean up
+for (i in 1:length(time_series_data$`Province/State`)){
+  #print(i)
+  if(is.na(time_series_data[i,1])) {
+    time_series_data[i,1] = paste(time_series_data[i,2],'[COUNTRY]')
+  } else {
+    
+  }
+}
+#time_series_data
+```
+
+```{r}
+
+
+time_series_plot_data = time_series_data[,-c(2:5)]
+time_series_plot_data[is.na(time_series_plot_data)] <- 0
+#time_series_plot_data[1,1]=0
+
+#location = time_series_plot_data[,1]
+#time_series_plot_data = time_series_plot_data[,-c(1)]
+#time_frame = time_series_plot_data[1,]
+#time_series_plot_data = time_series_plot_data[-c(1),]
+```
+
+```{r}
+if (!require("jsonlite")) {
+install.packages("jsonlite")
+library(jsonlite)
+}
+x <- toJSON(time_series_plot_data)
+#cat(x)
+write_json(x, "time_series_plot_data.json", pretty = TRUE, auto_unbox = FALSE)
+```
+
+```{r}
+if (!require("dygraphs")) {
+install.packages("dygraphs")
+library(dygraphs)
+}
+
+
+```
+
+```{r}
+
+
+```
